@@ -695,6 +695,8 @@ module Types where
   consis-ground-eq : ∀{A B : Type} → (c : A ⌣ B) →
       (gA : Ground A) → (gB : Ground B)
       → A ≡ B
+  consis-ground-eq {⋆} unk⌣L () _
+  consis-ground-eq {B = ⋆} unk⌣R _ ()
   consis-ground-eq {(` _)} {(` _)} base⌣ gA gB = refl
   consis-ground-eq {(⋆ ⇒ ⋆)} {(_ ⇒ _)} fun⌣ G-Fun G-Fun = refl
   consis-ground-eq {(_ `× _)} {(_ `× _)} pair⌣ G-Pair G-Pair = refl

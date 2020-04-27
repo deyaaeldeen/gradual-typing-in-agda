@@ -39,32 +39,34 @@ module EquivCast
 
   module Equiv 
     (EqCast : ∀{A B} → Cast₁ (A ⇒ B) → Cast₂ (A ⇒ B) → Set)
+    (cross-equiv : ∀{A B : Type}{c₁ : Cast₁ (A ⇒ B)}{c₂ : Cast₂ (A ⇒ B)}
+            → CastStruct.Cross CastCalc₁ c₁ → EqCast c₁ c₂ → CastStruct.Cross CastCalc₂ c₂)
     (inert-equiv : ∀{A B : Type}{c₁ : Cast₁ (A ⇒ B)}{c₂ : Cast₂ (A ⇒ B)}
             → CastStruct.Inert CastCalc₁ c₁ → EqCast c₁ c₂ → CastStruct.Inert CastCalc₂ c₂)
     (active-equiv : ∀{A B : Type}{c₁ : Cast₁ (A ⇒ B)}{c₂ : Cast₂ (A ⇒ B)}
             → CastStruct.Active CastCalc₁ c₁ → EqCast c₁ c₂ → CastStruct.Active CastCalc₂ c₂)
-    (dom-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A ⇒ B) ⇒ (C ⇒ D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A ⇒ B) ⇒ (C ⇒ D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (dom-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A ⇒ B) ⇒ (C ⇒ D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A ⇒ B) ⇒ (C ⇒ D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.dom CastCalc₁ c₁ i₁) (CastStruct.dom CastCalc₂ c₂ i₂))
-    (cod-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A ⇒ B) ⇒ (C ⇒ D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A ⇒ B) ⇒ (C ⇒ D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (cod-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A ⇒ B) ⇒ (C ⇒ D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A ⇒ B) ⇒ (C ⇒ D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.cod CastCalc₁ c₁ i₁) (CastStruct.cod CastCalc₂ c₂ i₂))
-    (fst-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `× B) ⇒ (C `× D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A `× B) ⇒ (C `× D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (fst-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `× B) ⇒ (C `× D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A `× B) ⇒ (C `× D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.fstC CastCalc₁ c₁ i₁) (CastStruct.fstC CastCalc₂ c₂ i₂))
-    (snd-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `× B) ⇒ (C `× D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A `× B) ⇒ (C `× D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (snd-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `× B) ⇒ (C `× D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A `× B) ⇒ (C `× D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.sndC CastCalc₁ c₁ i₁) (CastStruct.sndC CastCalc₂ c₂ i₂))
-    (inl-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `⊎ B) ⇒ (C `⊎ D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A `⊎ B) ⇒ (C `⊎ D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (inl-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `⊎ B) ⇒ (C `⊎ D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A `⊎ B) ⇒ (C `⊎ D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.inlC CastCalc₁ c₁ i₁) (CastStruct.inlC CastCalc₂ c₂ i₂))
-    (inr-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `⊎ B) ⇒ (C `⊎ D))}{i₁ : CastStruct.Inert CastCalc₁ c₁}
-                              {c₂ : Cast₂ ((A `⊎ B) ⇒ (C `⊎ D))}{i₂ : CastStruct.Inert CastCalc₂ c₂}
+    (inr-equiv : ∀{A B C D : Type}{c₁ : Cast₁ ((A `⊎ B) ⇒ (C `⊎ D))}{i₁ : CastStruct.Cross CastCalc₁ c₁}
+                              {c₂ : Cast₂ ((A `⊎ B) ⇒ (C `⊎ D))}{i₂ : CastStruct.Cross CastCalc₂ c₂}
             → EqCast c₁ c₂ 
             → EqCast (CastStruct.inrC CastCalc₁ c₁ i₁) (CastStruct.inrC CastCalc₂ c₂ i₂))
     where
@@ -274,20 +276,20 @@ module EquivCast
           let a₂ = active-equiv a c₁≈c₂ in
           ⟨ CastStruct.applyCast CastCalc₂ M₂ vM₂ c₂ {a₂} , ⟨ (CC₂.cast vM₂ {a₂}) , applyCast-equiv M₁≈M₂ c₁≈c₂ ⟩ ⟩
       simulate (≈-app{M₂ = M₂} (≈-cast{M₂ = V₂}{c₂ = c₂} V₁≈V₂ c₁≈c₂) M₁≈M₂) (CC₁.fun-cast v x {i}) =
-          let i₂ = inert-equiv i c₁≈c₂ in
+          let i₂ = cross-equiv i c₁≈c₂ in
           let R = (V₂ ● (M₂ ⟨ CastStruct.dom CastCalc₂ c₂ i₂ ⟩₂)) ⟨ CastStruct.cod CastCalc₂ c₂ i₂ ⟩₂ in
           ⟨ R , ⟨ (CC₂.fun-cast (value-equiv V₁≈V₂ v) (value-equiv M₁≈M₂ x ) {i₂}) ,
                   ≈-cast (≈-app V₁≈V₂ (≈-cast M₁≈M₂ (dom-equiv c₁≈c₂))) (cod-equiv c₁≈c₂) ⟩ ⟩
-      simulate (≈-fst (≈-cast {M₂ = V₂}{c₂ = c₂} M₁≈M₂ c₁≈c₂)) (CC₁.fst-cast {c = c₁} vM₁ {i = i₁}) =
-          let i₂ = inert-equiv i₁ c₁≈c₂ in
+      simulate (≈-fst (≈-cast {M₂ = V₂}{c₂ = c₂} M₁≈M₂ c₁≈c₂)) (CC₁.fst-cast {c = c₁} vM₁ {x = i₁}) =
+          let i₂ = cross-equiv i₁ c₁≈c₂ in
           let R = (fst₂ V₂) ⟨ CastStruct.fstC CastCalc₂ c₂ i₂ ⟩₂ in
           ⟨ R , ⟨ CC₂.fst-cast (value-equiv M₁≈M₂ vM₁) {i₂} , ≈-cast (≈-fst M₁≈M₂) (fst-equiv c₁≈c₂) ⟩ ⟩ 
-      simulate (≈-snd (≈-cast {M₂ = V₂}{c₂ = c₂} M₁≈M₂ c₁≈c₂)) (CC₁.snd-cast {c = c₁} vM₁ {i = i₁}) =
-          let i₂ = inert-equiv i₁ c₁≈c₂ in
+      simulate (≈-snd (≈-cast {M₂ = V₂}{c₂ = c₂} M₁≈M₂ c₁≈c₂)) (CC₁.snd-cast {c = c₁} vM₁ {x = i₁}) =
+          let i₂ = cross-equiv i₁ c₁≈c₂ in
           let R = (snd₂ V₂) ⟨ CastStruct.sndC CastCalc₂ c₂ i₂ ⟩₂ in
           ⟨ R , ⟨ CC₂.snd-cast (value-equiv M₁≈M₂ vM₁) {i₂} , ≈-cast (≈-snd M₁≈M₂) (snd-equiv c₁≈c₂) ⟩ ⟩ 
       simulate (≈-case{L₂ = L₂}{M₂ = M₂} (≈-cast {M₂ = V₂}{c₂ = c₂} N₁≈N₂ c₁≈c₂) L₁≈L₂ M₁≈M₂) (CC₁.case-cast vN₁ {i₁}) =
-          let i₂ = inert-equiv i₁ c₁≈c₂ in
+          let i₂ = cross-equiv i₁ c₁≈c₂ in
           let R = case₂ V₂ (ƛ₂ ((rename₂ S_ L₂) ● ((`` Z) ⟨ CastStruct.inlC CastCalc₂ c₂ i₂ ⟩₂ )))
                            (ƛ₂ ((rename₂ S_ M₂) ● ((`` Z) ⟨ CastStruct.inrC CastCalc₂ c₂ i₂ ⟩₂ ))) in
           let r1 = rename-equiv {ρ = S_} L₁≈L₂ in
